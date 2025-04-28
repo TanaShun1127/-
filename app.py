@@ -24,10 +24,7 @@ def get_stock_yf(stock, start, end):
     return df
 
 data = get_stock_yf(ticker, start_date, end_date)
-data.columns = data.columns.map('_'.join)
 st.write(data.head())
-
-
 
 
 if st.button('予測する'):
