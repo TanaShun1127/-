@@ -51,31 +51,14 @@ if st.button('予測する'):
     time.sleep(0.3)
     progress_bar.progress(40)
 
-   # ステップ4：モデル学習
+    # ステップ4：モデル学習
     status_text.text('モデルを学習中...')
     dtrain = lgb.Dataset(X_train, y_train)
-    dvalid = lgb.Dataset(X_test, y_test, reference=dtrain)  # ←バリデーションデータも作る
-
-    params = {
-        'objective': 'regression',
-        'metric': 'rmse',
-        'verbosity': -1,
-    }
-
-    feature_names = X_train.columns.tolist()
-
-    model = lgb.train(
-        params,
-        dtrain,
-        valid_sets=[dvalid],  # ←バリデーションを渡す！
-        feature_name=feature_names,
-        num_boost_round=1000,     # ←最大ラウンド数（多めにしてOK）
-        early_stopping_rounds=20, # ←20回連続改善しなければストップ
-        verbose_eval=False        # ←学習時にログ出さない（静かに学習）
-    )
+    params = {'metric': 'rmse'}
+    # feature_names = X_train.columns.tolist()
+    model = lgb.train(params, dtrain)# , feature_name=feature_names)
     time.sleep(0.3)
     progress_bar.progress(60)
-
 
     # ステップ5：テストデータ予測
     status_text.text('テストデータを予測中...')
