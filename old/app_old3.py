@@ -55,8 +55,8 @@ if st.button('予測する'):
     status_text.text('モデルを学習中...')
     dtrain = lgb.Dataset(X_train, y_train)
     params = {'metric': 'rmse'}
-    # feature_names = X_train.columns.tolist()
-    model = lgb.train(params, dtrain)# , feature_name=feature_names)
+    feature_names = X_train.columns.tolist()
+    model = lgb.train(params, dtrain, feature_name=feature_names)
     time.sleep(0.3)
     progress_bar.progress(60)
 
