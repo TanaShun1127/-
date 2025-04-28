@@ -3,12 +3,11 @@ import pandas as pd
 import streamlit as st
 import altair as alt
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
 import numpy as np
 import lightgbm as lgb
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
-import time
+import time  # ← sleep用！
 
 # アプリタイトル
 st.title("📈 株価予測アプリ")
@@ -16,7 +15,7 @@ st.title("📈 株価予測アプリ")
 # サイドバー
 st.sidebar.write("""## 詳細情報""")
 ticker = st.sidebar.text_input("ティッカーシンボルを入力してください", "AAPL")
-start_date = st.sidebar.date_input("開始日", datetime.today() - relativedelta(years=3))
+start_date = st.sidebar.date_input("開始日", datetime(2018, 1, 1))
 end_date = st.sidebar.date_input("終了日", datetime.today())
 
 def get_stock_yf(stock, start, end):
