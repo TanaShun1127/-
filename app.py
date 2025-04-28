@@ -18,9 +18,17 @@ ticker = st.sidebar.text_input("ティッカーシンボルを入力してくだ
 start_date = st.sidebar.date_input("開始日", datetime(2018, 1, 1))
 end_date = st.sidebar.date_input("終了日", datetime.today())
 
+
 def get_stock_yf(stock, start, end):
     df = yf.download(tickers=stock, start=start, end=end)
     return df
+
+data = get_stock_yf(ticker, start_date, end_date)
+data.columns = data.columns.map('_'.join)
+st.write(data.head())
+
+
+
 
 if st.button('予測する'):
 
