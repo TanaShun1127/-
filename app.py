@@ -21,10 +21,10 @@ end_date = st.sidebar.date_input("終了日", datetime.today())
 
 def get_stock_yf(stock, start, end):
     df = yf.download(tickers=stock, start=start, end=end)
+    # カラムがMultiIndex（2階層）になっている場合
+    if isinstance(df.columns, pd.MultiIndex):
+        df.columns = df.columns.get_level_values(0)  # ←1階層目だけ取る！
     return df
-
-data = get_stock_yf(ticker, start_date, end_date)
-st.write(data.head())
 
 
 if st.button('予測する'):
@@ -36,14 +36,13 @@ if st.button('予測する'):
     # ステップ1：データ取得
     status_text.text('株価データを取得中...')
     data = get_stock_yf(ticker, start_date, end_date)
-    data.columns = data.columns.map('_'.join)
     time.sleep(0.3)
     progress_bar.progress(10)
 
     # ステップ2：特徴量作成
     status_text.text('特徴量を作成中...')
-    data['Target'] = data[f'Close_{ticker}'].shift(-1)
-    features = [f'Open_{ticker}', f'High_{ticker}', f'Low_{ticker}', f'Close_{ticker}', f'Volume_{ticker}']
+    data['Target'] = data['Close'].shift(-1)
+    features = ['Open', 'High', 'Low', 'Close', 'Volume']
 
     X = data[features].iloc[:-1]
     y = data['Target'].iloc[:-1]
@@ -101,10 +100,10 @@ if st.button('予測する'):
         current_date += pd.tseries.offsets.BDay(1)
         future_dates.append(current_date)
 
-        last_features[0][features.index(f'Open_{ticker}')] = pred_price
-        last_features[0][features.index(f'High_{ticker}')] = pred_price
-        last_features[0][features.index(f'Low_{ticker}')] = pred_price
-        last_features[0][features.index(f'Close_{ticker}')] = pred_price
+        last_features[0][features.index('Open')] = pred_price
+        last_features[0][features.index('High')] = pred_price
+        last_features[0][features.index('Low')] = pred_price
+        last_features[0][features.index('Close')] = pred_price
 
         # 5日分進捗を小刻みに進める
         progress_bar.progress(70 + (i + 1) * 5)
