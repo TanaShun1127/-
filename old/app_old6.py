@@ -8,7 +8,6 @@ import lightgbm as lgb
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 import time
-from dateutil.relativedelta import relativedelta
 
 # アプリタイトル
 st.title("📈 株価予測アプリ")
@@ -16,7 +15,7 @@ st.title("📈 株価予測アプリ")
 # サイドバー
 st.sidebar.write("""## 詳細情報""")
 ticker = st.sidebar.text_input("ティッカーシンボルを入力してください", "AAPL")
-start_date = st.sidebar.date_input("開始日", datetime.today() - relativedelta(years=3))
+start_date = st.sidebar.date_input("開始日", datetime(2018, 1, 1))
 end_date = st.sidebar.date_input("終了日", datetime.today())
 
 
