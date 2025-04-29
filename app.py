@@ -74,8 +74,7 @@ if st.button('予測する'):
         valid_sets=[dvalid],  # ←バリデーションを渡す！
         feature_name=feature_names,
         num_boost_round=1000,     # ←最大ラウンド数（多めにしてOK）
-        callbacks=[lgb.early_stopping(stopping_rounds=10)], # ←20回連続改善しなければストップ
-        verbose_eval=False        # ←学習時にログ出さない（静かに学習）
+        callbacks=[lgb.early_stopping(stopping_rounds=10),lgb.log_evaluation(0)]# ←10回連続改善しなければストップ
     )
     time.sleep(0.3)
     progress_bar.progress(60)
