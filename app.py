@@ -38,8 +38,9 @@ if st.button('予測する'):
     data = get_stock_yf(ticker, start_date, end_date)
     # データが空の場合のチェック ← 追加改善点
     if data.empty:
-        st.error("""株価データが取得できませんでした。
-                 ティッカーシンボルや日付範囲に誤りがあるか、米国市場休場の可能性があります。"""")
+        st.error("""
+                 株価データが取得できませんでした。
+                 ティッカーシンボルや日付範囲に誤りがあるか、米国市場休場の可能性があります。""")
         st.stop()
 
     time.sleep(0.3)
