@@ -27,9 +27,6 @@ def get_stock_yf(stock, start, end):
         df.columns = df.columns.get_level_values(0)  # ←1階層目だけ取る！
     return df
 
-# データ取得後、列名を表示して確認
-data = get_stock_yf(ticker, start_date, end_date)
-st.write(data) 
 
 if st.button('予測する'):
 
