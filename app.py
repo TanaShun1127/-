@@ -27,10 +27,6 @@ def get_stock_yf(stock, start, end):
         df.columns = df.columns.get_level_values(0)  # ←1階層目だけ取る！
     return df
 
-# データ取得後、列名を表示して確認
-data = get_stock_yf(ticker, start_date, end_date)
-st.write(data) 
-
 if st.button('予測する'):
 
     # プログレスバーとステータステキスト
@@ -40,8 +36,14 @@ if st.button('予測する'):
     # ステップ1：データ取得
     status_text.text('株価データを取得中...')
     data = get_stock_yf(ticker, start_date, end_date)
+    # データが空の場合のチェック ← 追加改善点
+    if data.empty:
+        st.error("株価データが取得できませんでした。ティッカーや日付範囲に誤りがあるか、米国市場休場の可能性があります。")
+        st.stop()
+
     time.sleep(0.3)
     progress_bar.progress(10)
+
 
     # ステップ2：特徴量作成
     status_text.text('特徴量を作成中...')
